@@ -5,20 +5,32 @@ using namespace std;
 
 class GradeBook
 {
+private:
+	string courseName;
 public:
-	void displayMessage( string courseName )
+	void setCourseName( string name )
 	{
-	   	cout << "Bem-vindo ao Grade Book for \n";
+		courseName = name;
+	}
+	void displayMessage()
+	{
+	   	cout << "Bem-vindo ao Grade Book de \n";
 		cout << courseName << "!" << endl;
 	}
 };
 
 int main()
 {
-	cout << "Exemplo de classe" << endl;
-	
+	string nameOfCourse;
 	GradeBook myGradeBook;
-	myGradeBook.displayMessage( "PE II" );
+
+	cout << "Exemplo de classe" << endl;
+
+	cout << "Informe o nome do curso:";
+	getline(cin, nameOfCourse);
+	myGradeBook.setCourseName( nameOfCourse );
+
+	myGradeBook.displayMessage();
 
 	return 0;
 }
