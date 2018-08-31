@@ -17,32 +17,28 @@
 
 using namespace std;
 
-int main()
+class aluno 
 {
+public:
 	string nome;
 	double p1, p2, t1, t2;
 	int faltas;
-	int aulas = 68;
-	int max_faltas = aulas * .25;
 
 	double g1;
 	string situacao;
 
-	cout << "Cálculo de G1!" << endl;
-
-	//while (1)
-	//{
+	void ler()
+	{
 		getline(cin, nome);
-	//	if ( cin.eof() )
-	//	{
-	//		break;
-	//	}
 		cin >> t1;
 		cin >> p1;
 		cin >> t2;
 		cin >> p2;
 		cin >> faltas;
+	}
 
+	void calcular(int max_faltas)
+	{
 		g1 = (2*p1 + 2*p2 + (t1 + t2) / 2 ) / 5;
 
 		if (faltas > max_faltas)
@@ -61,7 +57,10 @@ int main()
 		{  
 			situacao = "G2";
 		}
+	}
 
+	void escrever() 
+	{
 		cout << nome << " "  <<  situacao << endl;
 		cout << t1 << endl;
 		cout << p1 << endl;
@@ -69,8 +68,25 @@ int main()
 		cout << p2 << endl;
 		cout << faltas << endl;
 		cout << g1 << endl;
-		cout << aulas << endl;
-		cout << max_faltas << endl;
-	//}
+	}
+};
+
+int main()
+{
+	aluno a;
+	int aulas = 68;
+	int max_faltas = aulas * .25;
+
+	cout << "Cálculo de G1!" << endl;
+
+	a.ler();
+
+	a.calcular(max_faltas);
+
+	a.escrever();
+
+	cout << aulas << endl;
+	cout << max_faltas << endl;
+
 	return 0;
 }
