@@ -29,7 +29,7 @@ int main() {
 	numeros.push_back(22);
 	numeros.push_back(0);
 
-	numeros.pop_back(0);
+	numeros.pop_back();
 
 
 	cout << "numeros contem ";
@@ -45,6 +45,29 @@ int main() {
 	}
 	cout << endl;
 
+  	for (vector<int>::iterator it = numeros.begin() ; 
+			it != numeros.end(); 
+								++it) {
+    	if (*it % 2 == 0) {
+			pares.push_back(*it);
+		} else {
+			impares.push_back(*it);
+		}
+	}
+
+  	for (vector<int>::iterator it = pares.begin() ; 
+			it != pares.end(); 
+								++it) {
+    	std::cout << ' ' << *it;
+	}
+	cout << endl;
+
+  	for (vector<int>::iterator it = impares.begin() ; 
+			it != impares.end(); 
+								++it) {
+    	std::cout << ' ' << *it;
+	}
+	cout << endl;
 
 
 	return 0;
