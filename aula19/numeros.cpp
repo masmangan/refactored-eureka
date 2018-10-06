@@ -8,69 +8,63 @@ em ordem crescente.
 marco.mangan@pucrs.br
 */
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 using namespace std;
 
 int main() {
-	vector<int> numeros; 	
-	vector<int> pares;		
-	vector<int> impares;		
+    vector<int> numeros;
+    vector<int> pares;
+    vector<int> impares;
+	int valor;
 
-	cout << "STL C++ Vector" << endl;
-	
-	// FIXME: receber valores a partir do teclado
-	// os valores fixos abaixo simplificam o teste do
-	// restante do programa
-	numeros.push_back(40);
-	numeros.push_back(11);
-	numeros.push_back(20);
-	numeros.push_back(17);
-	numeros.push_back(22);
-	numeros.push_back(0);
+    cout << "STL C++ Vector" << endl;
 
-	numeros.pop_back();
+	do {
+		cin >> valor;
+		numeros.push_back(valor);
+	} while (valor);
+    numeros.pop_back();
 
+    cout << "numeros = ";
+    for (vector<int>::iterator it = numeros.begin() ;
+            it != numeros.end();
+            ++it) {
+        std::cout << ' ' << *it;
+    }
+    cout << endl;
 
-	cout << "numeros contem ";
-	cout << int(numeros.size());
-	cout << " elementos.";
-	cout <<  endl;
+    for (vector<int>::iterator it = numeros.begin() ;
+            it != numeros.end();
+            ++it) {
+        if (*it % 2 == 0) {
+            pares.push_back(*it);
+        } else {
+            impares.push_back(*it);
+        }
+    }
 
-	cout << "valores em numeros:";
-  	for (vector<int>::iterator it = numeros.begin() ; 
-			it != numeros.end(); 
-								++it) {
-    	std::cout << ' ' << *it;
-	}
-	cout << endl;
-
-  	for (vector<int>::iterator it = numeros.begin() ; 
-			it != numeros.end(); 
-								++it) {
-    	if (*it % 2 == 0) {
-			pares.push_back(*it);
-		} else {
-			impares.push_back(*it);
-		}
-	}
-
-  	for (vector<int>::iterator it = pares.begin() ; 
-			it != pares.end(); 
-								++it) {
-    	std::cout << ' ' << *it;
-	}
-	cout << endl;
-
-  	for (vector<int>::iterator it = impares.begin() ; 
-			it != impares.end(); 
-								++it) {
-    	std::cout << ' ' << *it;
-	}
-	cout << endl;
+	sort(pares.begin(), pares.end());
+	sort(impares.begin(), impares.end());
 
 
-	return 0;
+    for (vector<int>::iterator it = pares.begin() ;
+            it != pares.end();
+            ++it) {
+        cout << ' ' << *it;
+    }
+    cout << endl;
+
+    for (vector<int>::iterator it = impares.begin() ;
+            it != impares.end();
+            ++it) {
+        cout << ' ' << *it;
+    }
+    cout << endl;
+
+
+    return 0;
 }
 
 
