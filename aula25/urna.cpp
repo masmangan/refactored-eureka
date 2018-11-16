@@ -33,17 +33,17 @@ public:
 
 
 void gravar(vector<int> votos) {
-	ofstream boletim;
-	cout << "Gravando..." << endl;
+    ofstream boletim;
+    cout << "Gravando..." << endl;
 
-	boletim.open("boletim.txt");
+    boletim.open("boletim.txt");
 
     boletim << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
-           boletim << votos[i] << endl;
+        boletim << votos[i] << endl;
     }
 
-	boletim.close();
+    boletim.close();
 
 }
 
@@ -110,7 +110,7 @@ void mostra_op(int op, vector<cand> lista) {
 void resultados(vector<cand> lista, vector<int> votos) {
     cout << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
-           cout << votos[i] << endl;
+        cout << votos[i] << endl;
     }
 }
 
@@ -135,7 +135,7 @@ void eleicao(vector<cand> lista, vector<int> & votos) {
 
         cout << "FIM! Votou!" << endl;
         votos.push_back(op);
-		gravar(votos);
+        gravar(votos);
 
     }
     cout << "Fim da votação!" << endl;
@@ -150,11 +150,11 @@ int main() {
     carregar(candidatos);
     //mostrar(candidatos);
 
-	eleicao(candidatos, votos);
+    eleicao(candidatos, votos);
 
-	resultados(candidatos, votos);
+    resultados(candidatos, votos);
 
-	return 0;
+    return 0;
 }
 
 

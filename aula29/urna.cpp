@@ -7,11 +7,18 @@ http://www.tse.jus.br/eleicoes/eleicoes-2018/simulador-de-votacao-na-urna-eletro
 Parte I
 Ler candidatos e números de candidatos de um arquivo chamado candidatos.txt.
 
+EDITADO: trocar vector por map
+
+Ver:
+http://www.cplusplus.com/reference/map/map/find/
+
 */
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <map>
+
 
 using namespace std;
 
@@ -33,21 +40,21 @@ public:
 
 
 void gravar(vector<int> votos) {
-	ofstream boletim;
-	cout << "Gravando..." << endl;
+    ofstream boletim;
+    cout << "Gravando..." << endl;
 
-	boletim.open("boletim.txt");
+    boletim.open("boletim.txt");
 
     boletim << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
-           boletim << votos[i] << endl;
+        boletim << votos[i] << endl;
     }
 
-	boletim.close();
+    boletim.close();
 
 }
 
-void carregar(vector<cand> & lista) {
+void carregar(vector<cand> & lista, map<int, cand> &tabela) {
     int numero;			// número do candidato, ex. 91
     string partido;		// nome do partido, ex. PMus
     string nome_candidato;		// nome do candidato
@@ -73,6 +80,8 @@ void carregar(vector<cand> & lista) {
 
         cand c(numero, partido, nome_candidato, nome_vice);
         lista.push_back(c);
+		tabela.insert(std::pair<int,cand>(numero,c));
+		//tabela[numero] = c;
 
         candidatos >> numero;
         candidatos >> partido;
@@ -91,30 +100,31 @@ void mostrar(vector<cand> lista) {
 
 }
 
-void mostra_op(int op, vector<cand> lista) {
-    int encontrou = 0;
+void mostra_op(int op, map<int, cand> tabela) {
 
-    for(int i = 0; i < lista.size(); i++) {
-        if (op == lista[i].numero) {
-            encontrou = 1;
-            cout << lista[i].numero << ", " << lista[i].partido << ", " << lista[i].nome_candidato << ", " << lista[i].nome_vice << endl;
-        }
-    }
+	map<int, cand>::iterator it;
 
-    if (encontrou == 0) {
-        cout << "Número errado! VOTO NULO." << endl;
-    }
+	it = tabela.find(op);
+
+	if (it == tabela.end()) {
+		cout << "*** Número errado! VOTO NULO." << endl;
+	} else {
+		cand c1 = get<1>(*it);
+        cout << c1.numero << ", " << c1.partido << ", " << c1.nome_candidato << ", " << c1.nome_vice << endl;
+
+	}
+
 
 }
 
 void resultados(vector<cand> lista, vector<int> votos) {
     cout << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
-           cout << votos[i] << endl;
+        cout << votos[i] << endl;
     }
 }
 
-void eleicao(vector<cand> lista, vector<int> & votos) {
+void eleicao(vector<int> & votos, map<int, cand> tabela) {
     int op;
     int conf;
 
@@ -126,7 +136,7 @@ void eleicao(vector<cand> lista, vector<int> & votos) {
         if (op == 0) {
             break;
         }
-        mostra_op(op, lista);
+        mostra_op(op, tabela);
 
         do {
             cout << "1 - Confirma ou 2 - Corrige" << endl;
@@ -135,7 +145,7 @@ void eleicao(vector<cand> lista, vector<int> & votos) {
 
         cout << "FIM! Votou!" << endl;
         votos.push_back(op);
-		gravar(votos);
+        gravar(votos);
 
     }
     cout << "Fim da votação!" << endl;
@@ -146,15 +156,16 @@ int main() {
 
     vector<cand> candidatos;
     vector<int> votos;
+	map<int, cand> tabela;
 
-    carregar(candidatos);
+    carregar(candidatos, tabela);
     //mostrar(candidatos);
 
-	eleicao(candidatos, votos);
+    eleicao(votos, tabela);
 
-	resultados(candidatos, votos);
+    resultados(candidatos, votos);
 
-	return 0;
+    return 0;
 }
 
 
