@@ -80,8 +80,9 @@ void carregar(vector<cand> & lista, map<int, cand> &tabela) {
 
         cand c(numero, partido, nome_candidato, nome_vice);
         lista.push_back(c);
-		tabela.insert(std::pair<int,cand>(numero,c));
-		//tabela[numero] = c;
+        //tabela.insert(std::pair<int,cand>(numero,c));
+        //tabela[numero] = c;
+        tabela.insert(make_pair(numero,c));
 
         candidatos >> numero;
         candidatos >> partido;
@@ -102,26 +103,37 @@ void mostrar(vector<cand> lista) {
 
 void mostra_op(int op, map<int, cand> tabela) {
 
-	map<int, cand>::iterator it;
+    map<int, cand>::iterator it;
 
-	it = tabela.find(op);
+    it = tabela.find(op);
 
-	if (it == tabela.end()) {
-		cout << "*** Número errado! VOTO NULO." << endl;
-	} else {
-		cand c1 = get<1>(*it);
+    if (it == tabela.end()) {
+        cout << "*** Número errado! VOTO NULO." << endl;
+    } else {
+        cand c1 = get<1>(*it);
         cout << c1.numero << ", " << c1.partido << ", " << c1.nome_candidato << ", " << c1.nome_vice << endl;
 
-	}
+    }
 
 
 }
 
 void resultados(vector<cand> lista, vector<int> votos) {
+    std::multimap<int,int> freq;
+    std::multimap<int,int>::iterator it;
+
     cout << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
-        cout << votos[i] << endl;
+        //cout << votos[i] << endl;
+        freq.insert(make_pair(votos[i], 0));
     }
+
+
+    for(it = freq.begin(); it != freq.end(); it = freq.upper_bound(it->first)) {
+        cout << it->first << ", " << freq.count(it->first) << endl;
+    }
+
+
 }
 
 void eleicao(vector<int> & votos, map<int, cand> tabela) {
@@ -156,7 +168,7 @@ int main() {
 
     vector<cand> candidatos;
     vector<int> votos;
-	map<int, cand> tabela;
+    map<int, cand> tabela;
 
     carregar(candidatos, tabela);
     //mostrar(candidatos);
