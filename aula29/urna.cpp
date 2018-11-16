@@ -54,7 +54,7 @@ void gravar(vector<int> votos) {
 
 }
 
-void carregar(vector<cand> & lista, map<int, cand> &tabela) {
+void carregar(map<int, cand> &tabela) {
     int numero;			// número do candidato, ex. 91
     string partido;		// nome do partido, ex. PMus
     string nome_candidato;		// nome do candidato
@@ -79,7 +79,6 @@ void carregar(vector<cand> & lista, map<int, cand> &tabela) {
         //cout << numero << ", " << partido << ", " << nome_candidato << ", " << nome_vice << endl;
 
         cand c(numero, partido, nome_candidato, nome_vice);
-        lista.push_back(c);
         //tabela.insert(std::pair<int,cand>(numero,c));
         //tabela[numero] = c;
         tabela.insert(make_pair(numero,c));
@@ -94,12 +93,11 @@ void carregar(vector<cand> & lista, map<int, cand> &tabela) {
 
 }
 
-void mostrar(vector<cand> lista) {
-    for(int i = 0; i < lista.size(); i++) {
-        cout << lista[i].numero << ", " << lista[i].partido << ", " << lista[i].nome_candidato << ", " << lista[i].nome_vice << endl;
-    }
-
-}
+//void mostrar(vector<cand> lista) {
+//    for(int i = 0; i < lista.size(); i++) {
+//        cout << lista[i].numero << ", " << lista[i].partido << ", " << lista[i].nome_candidato << ", " << lista[i].nome_vice << endl;
+//    }
+//}
 
 void mostra_op(int op, map<int, cand> tabela) {
 
@@ -118,9 +116,10 @@ void mostra_op(int op, map<int, cand> tabela) {
 
 }
 
-void resultados(vector<cand> lista, vector<int> votos) {
+void resultados(vector<int> votos, map<int, cand> tabela) {
     std::multimap<int,int> freq;
     std::multimap<int,int>::iterator it;
+	int invalidos = 0;
 
     cout << "Resultados" << endl;
     for(int i = 0; i < votos.size(); i++) {
@@ -130,8 +129,16 @@ void resultados(vector<cand> lista, vector<int> votos) {
 
 
     for(it = freq.begin(); it != freq.end(); it = freq.upper_bound(it->first)) {
-        cout << it->first << ", " << freq.count(it->first) << endl;
+		if (tabela.find(it->first) == tabela.end()) {
+			invalidos++;
+		} else {
+        	cout << it->first << ", " << freq.count(it->first) << endl;
+		}
     }
+
+	if (invalidos > 0) {
+		cout << "inválidos, " << invalidos << endl;
+	}
 
 
 }
@@ -142,15 +149,15 @@ void eleicao(vector<int> & votos, map<int, cand> tabela) {
 
     while (1) {
 
+        do {
         cout << "Governador" << endl;
         cout << "Digite sua opção:" << endl;
         cin >> op;
         if (op == 0) {
-            break;
+            goto END;
         }
         mostra_op(op, tabela);
 
-        do {
             cout << "1 - Confirma ou 2 - Corrige" << endl;
             cin >> conf;
         } while (conf != 1);
@@ -160,33 +167,24 @@ void eleicao(vector<int> & votos, map<int, cand> tabela) {
         gravar(votos);
 
     }
+	END:
     cout << "Fim da votação!" << endl;
 
 }
 
 int main() {
 
-    vector<cand> candidatos;
     vector<int> votos;
     map<int, cand> tabela;
 
-    carregar(candidatos, tabela);
+    carregar(tabela);
     //mostrar(candidatos);
 
     eleicao(votos, tabela);
-
-    resultados(candidatos, votos);
+    resultados(votos, tabela);
 
     return 0;
 }
-
-
-
-
-
-
-
-
 
 
 
